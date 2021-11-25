@@ -11,16 +11,15 @@ sr.readline()
 messages = []
 for line in sr:
     data = line.replace('K', '').split(',')
-    messages.append({
-        'date': datetime.now().isoformat(),
-        'price': float(data[1]),
-        'volume': float(data[5]) * 1000,
-    })
+    messages.append([float(data[1]), float(data[5]) * 1000])
 sr.close()
 while True:
-    #print('begin of file')
     for i in range(len(messages)):
-        producer.send('btc', messages[i])
+        message = {
+            'date': datetime.now().isoformat(),
+            'price': messages[i][0],
+            'volume': messages[i][0],
+        }
+        producer.send('btc', message)
         #print(f'send at: {datetime.now().isoformat()}')
         time.sleep(5)
-    #print('end of file')
